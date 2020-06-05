@@ -1,0 +1,125 @@
+\section{Дисковое шифрование}\label{DSK}
+
+\subsection{Интерфейс}\label{DSK.IFace}
+
+Блоковое дисковое шифрование задается алгоритмами 
+зашифрования~$\algname{belt-bde}$ и расшифрования~$\algname{belt-bde}^{-1}$.
+%
+Секторное дисковое шифрование задается алгоритмами 
+зашифрования~$\algname{belt-sde}$ и расшифрования~$\algname{belt-sde}^{-1}$.
+
+Входными данными~$\algname{belt-bde}$, $\algname{belt-sde}$ являются 
+сообщение~$X\in\{0,1\}^{128*}$, ключ~$K\in\{0,1\}^{256}$ и 
+синхропосылка~$S\in\{0,1\}^{128}$. 
+%
+При блоковом шифровании длина~$X$ должна быть не меньше~$128$, при 
+секторном~--- не меньше~$256$.
+%
+Выходными данными является зашифрованное сообщение~$Y\in\{0,1\}^{|X|}$.
+
+Входными данными~$\algname{belt-bde}^{-1}$, $\algname{belt-sde}^{-1}$ являются 
+зашифрованное сообщение~$Y\in\{0,1\}^{128*}$, ключ~$K\in\{0,1\}^{256}$ и 
+синхропосылка~$S\in\{0,1\}^{128}$. 
+%
+При блоковом шифровании длина~$Y$ должна быть не меньше~$128$, при 
+секторном~--- не меньше~$256$.
+%
+Выходными данными является расшифрованное сообщение~$X\in\{0,1\}^{|Y|}$.
+
+Слова~$X$ и~$Y$ представляют собой содержимое дискового сектора до и после
+зашифрования. Синхропосылка~$S$ строится по номеру сектора.
+
+Используются алгоритмы~$\algname{belt-block}$ и~$\algname{belt-block}^{-1}$, 
+определенные в~\ref{BLOCK}. 
+%
+При секторном шифровании дополнительно используются 
+алгоритмы~$\algname{belt-wblock}$ и~$\algname{belt-wblock}^{-1}$, 
+определенные в~\ref{WBLOCK}.  
+
+\subsection{Переменные и константы}\label{DSK.Vars}
+
+Используется переменная~$s\in\{0,1\}^{128}$. 
+
+В алгоритмах~$\algname{belt-bde}$, $\algname{belt-bde}^{-1}$ 
+используется слово~$C=\hex{02}\parallel 0^{120}$.
+Слово представляет многочлен~$C(x)=x$ (см.~\ref{DEFS.Poly}).
+
+\subsection{Алгоритм блокового зашифрования}\label{DSK.BDE.Encr}
+
+Зашифрование~$\algname{belt-bde}(X,K,S)$ выполняется следующим образом: 
+\begin{enumerate}
+\item
+Определить~$(X_1,X_2,\ldots,X_n)=\Split(X, 128)$.
+\item
+Установить~$s\leftarrow \algname{belt-block}(S,K)$.
+\item
+Для~$i=1,2,\ldots,n$ выполнить: 
+\begin{enumerate}
+\item
+$s\leftarrow s \ast C$;
+\item
+$Y_i\leftarrow\algname{belt-block}(X_i\oplus s, K)\oplus s$.
+\end{enumerate}
+\item
+Возвратить~$Y=Y_1\parallel Y_2\parallel\ldots\parallel Y_n$.
+\end{enumerate}
+
+\subsection{Алгоритм блокового расшифрования}\label{DSK.BDE.Decr}
+
+Расшифрование~$\algname{belt-bde}^{-1}(Y,K,S)$ выполняется следующим образом: 
+\begin{enumerate}
+\item
+Определить~$(Y_1,Y_2,\ldots,Y_n)=\Split(Y,128)$.
+\item
+Установить~$s\leftarrow\algname{belt-block}(S,K)$.
+\item
+Для~$i=1,2,\ldots,n$ выполнить: 
+\begin{enumerate}
+\item
+$s\leftarrow s \ast C$;
+\item
+$X_i\leftarrow\algname{belt-block}^{-1}(Y_i\oplus s, K)\oplus s$.
+\end{enumerate}
+\item
+Возвратить~$X=X_1\parallel X_2\parallel\ldots\parallel X_n$.
+\end{enumerate}
+
+\subsection{Алгоритм секторного зашифрования}\label{DSK.SDE.Encr}
+
+Зашифрование~$\algname{belt-sde}(X,K,S)$ выполняется следующим образом: 
+\begin{enumerate}
+\item
+Установить~$Y\leftarrow X$.
+\item
+Записать~$Y=Y_1\parallel Y_2$, где $|Y_1|=128$.
+\item
+Установить~$s\leftarrow \algname{belt-block}(S,K)$.
+\item
+Установить~$Y_1\leftarrow Y_1\oplus s$.
+\item
+Установить~$Y\leftarrow\algname{belt-wblock}(Y,K)$.
+\item
+Установить~$Y_1\leftarrow Y_1\oplus s$.
+\item
+Возвратить~$Y$.
+\end{enumerate}
+
+\subsection{Алгоритм секторного расшифрования}\label{DSK.SDE.Decr}
+
+Расшифрование~$\algname{belt-sde}^{-1}(Y,K,S)$ выполняется следующим образом: 
+\begin{enumerate}
+\item
+Установить~$X\leftarrow Y$.
+\item
+Записать~$X=X_1\parallel X_2$, где $|X_1|=128$.
+\item
+Установить~$s\leftarrow \algname{belt-block}(S,K)$.
+\item
+Установить~$X_1\leftarrow X_1\oplus s$.
+\item
+Установить~$X\leftarrow\algname{belt-wblock}^{-1}(X,K)$.
+\item
+Установить~$X_1\leftarrow X_1\oplus s$.
+\item
+Возвратить~$X$.
+\end{enumerate}

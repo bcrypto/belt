@@ -1,0 +1,51 @@
+\hiddensection{Шифрование в режиме гаммирования с обратной связью}
+\label{TEST.CFB}
+
+В таблицах~\ref{Table.TEST.CFBE}, \ref{Table.TEST.CFBD} 
+представлены примеры шифрования в режиме гаммирования с обратной связью.
+
+\begin{table}[H]
+\caption{Зашифрование в режиме гаммирования с обратной связью}\label{Table.TEST.CFBE}
+\begin{tabular}{|l|l|}
+\hline
+$X$ &
+$\hexz{B194BAC8~0A08F53B~366D008E~584A5DE4~8504FA9D~1BB6C7AC~252E72C2~02FDCE0D}$\\
+&
+$\hex{5BE3D612~17B96181~FE6786AD~716B890B}$\\
+\hline
+$K$ & 
+$\hex{E9DEE72C~8F0C0FA6~2DDB49F4~6F739647~06075316~ED247A37~39CBA383~03A98BF6}$\\
+\hline
+$S$ & 
+$\hex{BE329713~43FC9A48~A02A885F~194B09A1}$\\
+\dhline
+$Y$ &
+$\hexz{C31E490A~90EFA374~626CC99E~4B7B8540~A6E48685~464A5A06~849C9CA7~69A1B0AE}$\\
+&
+$\hex{55C2CC59~39303EC8~32DD2FE1~6C8E5A1B}$\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{Расшифрование в режиме гаммирования с обратной связью}\label{Table.TEST.CFBD}
+\begin{tabular}{|l|l|}
+\hline
+$Y$ &
+$\hexz{E12BDC1A~E28257EC~703FCCF0~95EE8DF1~C1AB7638~9FE678CA~F7C6F860~D5BB9C4F}$\\
+& 
+$\hex{F33C657B~637C306A~DD4EA779~9EB23D31}$\\
+\hline
+$K$ & 
+$\hex{92BD9B1C~E5D14101~5445FBC9~5E4D0EF2~682080AA~227D642F~2687F934~90405511}$\\
+\hline
+$S$ & 
+$\hex{7ECDA4D0~1544AF8C~A58450BF~66D2E88A}$\\
+\dhline
+$X$ &
+$\hexz{FA9D107A~86F375EE~65CD1DB8~81224BD0~16AFF814~938ED39B~3361ABB0~BF0851B6}$\\
+&
+$\hex{52244EB0~6842DD4C~94AA4500~774E40BB}$\\
+\hline
+\end{tabular}
+\end{table}

@@ -1,0 +1,48 @@
+\section{Расширение ключа}\label{KEYEXPAND}
+
+\subsection{Интерфейс}\label{KEYEXPAND.IFace}
+
+Расширение ключа задается алгоритмом~\algname{belt-keyexpand}.
+
+Входными данными~$\algname{belt-keyexpand}$ является 
+расширяемый ключ $K_1\parallel K_2\parallel\ldots\parallel K_n$,
+где~$K_i\in\{0,1\}^{32}$, $n\in\{4,6,8\}$.
+%
+Выходными данными является расширенный ключ~$K\in\{0,1\}^{256}$.
+
+\subsection{Алгоритм расширения ключа}\label{KEYEXPAND.Algo}
+
+Расширение ключа 
+$\algname{belt-keyexpand}(K_1\parallel 
+K_2\parallel\ldots\parallel K_n)$ 
+выполняется следующим образом:
+\begin{enumerate}
+\item
+Если $n=4$, то выполнить:
+\begin{enumerate}
+\item
+$K_5\leftarrow K_1$;
+\item
+$K_6\leftarrow K_2$;
+\item
+$K_7\leftarrow K_3$;
+\item
+$K_8\leftarrow K_4$.
+\end{enumerate}
+
+\item
+Если $n=6$, то выполнить:
+\begin{enumerate}
+\item
+$K_7\leftarrow K_1\oplus K_2\oplus K_3$;
+\item
+$K_8\leftarrow K_4\oplus K_5\oplus K_6$.
+\end{enumerate}
+
+\item
+Установить 
+$K\leftarrow K_1\parallel K_2\parallel\ldots\parallel K_8$.
+
+\item
+Возвратить $K$.
+\end{enumerate}

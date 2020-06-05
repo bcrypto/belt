@@ -1,0 +1,87 @@
+\section{Шифрование в режиме простой замены}\label{ECB}
+
+\subsection{Интерфейс}\label{ECB.IFace}
+
+Шифрование в режиме простой замены задается алгоритмами 
+зашифрования~$\algname{belt-ecb}$ и расшифрования~$\algname{belt-ecb}^{-1}$.
+
+Входными данными $\algname{belt-ecb}$ являются сообщение~$X\in\{0,1\}^*$ и 
+ключ~$K\in\{0,1\}^{256}$. 
+%
+Длина $X$ должна быть не меньше~$128$.
+%
+Выходными данными является зашифрованное сообщение~$Y\in\{0,1\}^{|X|}$.
+
+Входными данными $\algname{belt-ecb}^{-1}$ являются зашифрованное 
+сообщение~$Y\in\{0,1\}^*$ и ключ~$K\in\{0,1\}^{256}$. 
+%
+Длина $Y$ должна быть не меньше~$128$.
+%
+Выходными данными является расшифрованное сообщение~$X\in\{0,1\}^{|Y|}$.
+
+Используются алгоритмы~$\algname{belt-block}$ и~$\algname{belt-block}^{-1}$, 
+определенные в~\ref{BLOCK}.
+
+\subsection{Переменные}\label{ECB.Vars}
+
+Пусть $m=|X|\bmod 128$ при зашифровании 
+и $m=|Y|\bmod 128$ при расшифровании.
+
+Если $m\neq 0$, то используется переменная~$r\in\{0,1\}^{128-m}$.
+
+\subsection{Алгоритм зашифрования}\label{ECB.Encr}
+
+Зашифрование~$\algname{belt-ecb}(X,K)$ выполняется следующим образом: 
+\begin{enumerate}
+\item
+Определить $(X_1,X_2,\ldots,X_n)=\Split(X,128)$.
+\item
+Если $|X_n|=128$, то
+\begin{enumerate}
+\item
+для $i=1,2,\ldots,n$ выполнить: $Y_i\leftarrow \algname{belt-block}(X_i,K)$.
+\end{enumerate}
+
+\item
+Иначе, если $|X_n|<128$, то
+\begin{enumerate}
+\item
+для $i=1,2,\ldots,n-2$ выполнить: $Y_i\leftarrow \algname{belt-block}(X_i,K)$;
+
+\item
+$(Y_n\parallel r)\leftarrow \algname{belt-block}(X_{n-1},K)$;
+
+\item
+$Y_{n-1}\leftarrow \algname{belt-block}(X_n\parallel r,K)$.
+\end{enumerate}
+
+\item
+Возвратить~$Y=Y_1\parallel Y_2\parallel\ldots\parallel Y_n$.
+\end{enumerate}
+
+\subsection{Алгоритм расшифрования}\label{ECB.Decr}
+
+Расшифрование~$\algname{belt-ecb}^{-1}(Y,K)$ выполняется следующим образом: 
+\begin{enumerate}
+\item
+Определить $(Y_1,Y_2,\ldots,Y_n)=\Split(Y,128)$.
+\item
+Если $|Y_n|=128$, то
+\begin{enumerate}
+\item
+для $i=1,2,\ldots,n$ выполнить: $X_i\leftarrow \algname{belt-block}^{-1}(Y_i,K)$.
+\end{enumerate}
+\item
+Иначе, если $|Y_n|<128$, то
+\begin{enumerate}
+\item
+для $i=1,2,\ldots,n-2$ 
+выполнить: $X_i\leftarrow \algname{belt-block}^{-1}(Y_i,K)$;
+\item
+$(X_n\parallel r)\leftarrow \algname{belt-block}^{-1}(Y_{n-1},K)$;
+\item
+$X_{n-1}\leftarrow \algname{belt-block}^{-1}(Y_n\parallel r,K)$.
+\end{enumerate}
+\item
+Возвратить~$X=X_1\parallel X_2\parallel\ldots\parallel X_n$.
+\end{enumerate}

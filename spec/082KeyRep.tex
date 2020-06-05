@@ -1,0 +1,60 @@
+\section{Преобразование ключа}\label{KEYREP}
+
+\subsection{Интерфейс}\label{KEYREP.IFace}
+
+Преобразование ключа задается алгоритмом~$\algname{belt-keyrep}$.
+
+Входными данными~$\algname{belt-keyrep}$ являются 
+преобразуемый ключ~$X\in\{0,1\}^n$,
+его уровень~$D\in\{0,1\}^{96}$,
+заголовок~$I\in\{0,1\}^{128}$ нового ключа и его длина~$m$.
+%
+Должны соблюдаться ограничения: $m,n\in\{128,192,256\}$, $m\leq n$.
+%
+Выходными данными является преобразованный ключ~$Y\in\{0,1\}^m$.
+
+При преобразовании ключа~$Y$ его уровень следует полагать 
+равным~$D\boxplus\itob{1}_{96}$.
+
+Используются алгоритмы~$\algname{belt-compress}$ и $\algname{belt-keyexpand}$,
+определенные в~\ref{COMPR} и~\ref{KEYEXPAND}.
+
+\subsection{Переменные}\label{KEYREP.Vars}
+
+Используются переменные~$r\in\{0,1\}^{32}$ и~$s\in\{0,1\}^{256}$.
+
+\subsection{Алгоритм преобразования ключа}\label{KEYREP.Alg}
+
+Преобразование ключа~$\algname{belt-keyrep}(X,D,I,m)$
+выполняется следующим образом:
+\begin{enumerate}
+\item
+Присвоить переменной $r$ значение:
+\begin{enumerate}
+\item[1)]
+$\hex{B194BAC8}$, если $n=m=128$;
+\item[2)]
+$\hex{5BE3D612}$, если $n=192$ и $m=128$;
+\item[3)]
+$\hex{5CB0C0FF}$, если $n=m=192$;
+\item[4)]
+$\hex{E12BDC1A}$, если $n=256$ и $m=128$;
+\item[5)]
+$\hex{C1AB7638}$, если $n=256$ и $m=192$;
+\item[6)]
+$\hex{F33C657B}$, если $n=m=256$.
+\end{enumerate}
+
+\item
+Установить~$s\leftarrow\algname{belt-keyexpand}(X)$.
+
+\item
+Установить~$(\perp,s)\leftarrow\algname{belt-compress}
+(r\parallel D\parallel I\parallel s)$. 
+
+\item
+Установить $Y\leftarrow\Lo(s, m)$.
+
+\item
+Возвратить $Y$.
+\end{enumerate}

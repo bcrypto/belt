@@ -1,0 +1,64 @@
+\hiddensection{Шифрование в режиме простой замены}\label{TEST.ECB}
+
+В таблицах~\ref{Table.TEST.ECBE}, \ref{Table.TEST.ECBD} 
+представлены примеры шифрования в режиме простой замены. 
+
+\begin{table}[H]
+\caption{Зашифрование в режиме простой замены}\label{Table.TEST.ECBE}
+\begin{tabular}{|l|l|}
+\hline
+$K$ & 
+$\hex{E9DEE72C~8F0C0FA6~2DDB49F4~6F739647~06075316~ED247A37~39CBA383~03A98BF6}$\\
+\ddhline
+$X$ &
+$\hexz{B194BAC8~0A08F53B~366D008E~584A5DE4~8504FA9D~1BB6C7AC~252E72C2~02FDCE0D}$\\
+&
+$\hex{5BE3D612~17B96181~FE6786AD~716B890B}$\\
+\dhline
+$Y$ &
+$\hexz{69CCA1C9~3557C9E3~D66BC3E0~FA88FA6E~5F23102E~F1097107~75017F73~806DA9DC}$\\
+&
+$\hex{46FB2ED2~CE771F26~DCB5E5D1~569F9AB0}$\\
+\ddhline
+$X$ &
+$\hexz{B194BAC8~0A08F53B~366D008E~584A5DE4~8504FA9D~1BB6C7AC~252E72C2~02FDCE0D}$\\
+&
+$\hex{5BE3D612~17B96181~FE6786AD~716B89}$\\
+\dhline
+$Y$ &
+$\hexz{69CCA1C9~3557C9E3~D66BC3E0~FA88FA6E~36F00CFE~D6D1CA14~98C12798~F4BEB207}$\\
+&
+$\hex{5F23102E~F1097107~75017F73~806DA9}$\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{Расшифрование в режиме простой замены}\label{Table.TEST.ECBD}
+\begin{tabular}{|l|l|}
+\hline
+$K$ & 
+$\hex{92BD9B1C~E5D14101~5445FBC9~5E4D0EF2~682080AA~227D642F~2687F934~90405511}$\\
+\ddhline
+$Y$ &
+$\hexz{E12BDC1A~E28257EC~703FCCF0~95EE8DF1~C1AB7638~9FE678CA~F7C6F860~D5BB9C4F}$\\
+& 
+$\hex{F33C657B~637C306A~DD4EA779~9EB23D31}$\\
+\dhline
+$X$ &
+$\hexz{0DC53006~00CAB840~B38448E5~E993F421~E55A239F~2AB5C5D5~FDB6E81B~40938E2A}$\\
+&
+$\hex{54120CA3~E6E19C7A~D750FC35~31DAEAB7}$\\
+\ddhline
+$Y$ &
+$\hexz{E12BDC1A~E28257EC~703FCCF0~95EE8DF1~C1AB7638~9FE678CA~F7C6F860~D5BB9C4F}$\\
+& 
+$\hex{F33C657B}$\\
+\dhline
+$X$ &
+$\hexz{0DC53006~00CAB840~B38448E5~E993F421~5780A6E2~B69EAFBB~258726D7~B6718523}$\\
+&
+$\hex{E55A239F}$\\
+\hline
+\end{tabular}
+\end{table}

@@ -1,0 +1,58 @@
+\section{Хэширование}\label{HASH}
+
+\subsection{Интерфейс}\label{HASH.IFace}
+
+Хэширование задается алгоритмом~$\algname{belt-hash}$.
+
+Входными данными~$\algname{belt-hash}$ является сообщение~$X\in\{0,1\}^*$.
+%
+Выходными данными является хэш-значение~$Y\in\{0,1\}^{256}$.
+
+Используется алгоритм~$\algname{belt-compress}$, определенный в~\ref{COMPR}.
+
+\subsection{Переменные}\label{HASH.Vars}
+
+Используются переменные~$r,s,t\in\{0,1\}^{128}$ и~$h\in\{0,1\}^{256}$.
+
+\subsection{Алгоритм хэширования}\label{HASH.Alg}
+
+Хэширование~$\algname{belt-hash}(X)$ выполняется следующим образом:
+\begin{enumerate}
+\item
+Определить $(X_1,X_2,\ldots,X_n)=\Split(X, 256)$.
+
+\item
+Установить
+\begin{enumerate}
+\item
+$r\leftarrow \itob{|X|}_{128}$;
+\item
+$s\leftarrow 0^{128}$;
+\item
+$h\leftarrow\hex{B194BAC80A08F53B366D008E584A5DE48504FA9D1BB6C7AC252E72C202FDCE0D}$ 
+(см. первые две строки таблицы~\ref{Table.SBOX});
+\item
+$X_n\leftarrow X_n \parallel 0^{256-|X_n|}$.
+\end{enumerate}
+
+\item
+Для $i=1,2,\ldots,n$ выполнить:
+\begin{enumerate}
+\item
+$(t,h)\leftarrow\algname{belt-compress}(X_i\parallel h)$;
+\item
+$s\leftarrow s\oplus t$.
+\end{enumerate}
+
+\item
+Установить 
+$(\perp,Y)\leftarrow\algname{belt-compress}(r\parallel s\parallel h)$.
+
+\item
+Возвратить $Y$.
+\end{enumerate}
+
+\vskip9pt
+\begin{note}
+Примечание~--- Если $X=\perp$, то $n=1$ и $X_1=\perp$.
+\end{note}

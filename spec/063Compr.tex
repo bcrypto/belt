@@ -1,0 +1,38 @@
+\section{Cжатие}\label{COMPR}
+
+\subsection{Интерфейс}\label{COMPR.IFace}
+
+Cжатие задается алгоритмом~$\algname{belt-compress}$.
+
+Входными данными $\algname{belt-compress}$ является слово~$X\in\{0,1\}^{512}$.
+%
+Выходными данными являются слова~$S\in\{0,1\}^{128}$ 
+и~$Y\in\{0,1\}^{256}$. 
+%
+Слово~$S$ является промежуточным результатом сжатия~$X$,
+этот выход может игнорироваться.
+%
+Слово~$Y$ является окончательным результатом сжатия.
+
+Используется алгоритм~$\algname{belt-block}$, определенный в~\ref{BLOCK}.
+
+\subsection{Алгоритм сжатия}\label{COMPR.Alg}
+
+Сжатие~$\algname{belt-compress}(X)$ выполняется следующим образом:
+%
+\begin{enumerate}
+\item
+Определить $(X_1,X_2,X_3,X_4)=\Split(X,128)$.
+\item
+Установить
+$S\leftarrow\algname{belt-block}(X_3\oplus X_4,X_1\parallel X_2)\oplus X_3\oplus X_4$.
+\item
+Установить
+$Y_1\leftarrow\algname{belt-block}(X_1,S\parallel X_4)\oplus X_1$.
+\item
+Установить
+$Y_2\leftarrow\algname{belt-block}(X_2,(S\oplus 1^{128})\parallel X_3)\oplus X_2$.
+\item
+Возвратить~$(S,Y)$, где $Y=Y_1\parallel Y_2$.
+\end{enumerate}
+

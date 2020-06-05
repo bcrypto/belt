@@ -1,0 +1,164 @@
+\section{Шифрование с сохранением формата}\label{FMT}
+
+\subsection{Интерфейс}\label{FMT.IFace}
+
+Шифрование с сохранением формата задается алгоритмами зашифрования
+$\algname{belt-fmt}$ и расшифрования~$\algname{belt-fmt}^{-1}$.
+
+Входными данными $\algname{belt-fmt}$ являются 
+слово~$X\in\ZZ_m^n$, ключ~$K\in\{0,1\}^{256}$ 
+и синхропосылка~$S\in\{0,1\}^{128}$.
+%
+Выходными данными является зашифрованное слово~$Y\in\ZZ_m^n$.
+
+Входными данными $\algname{belt-fmt}^{-1}$ являются 
+зашифрованное слово~$Y\in\ZZ_m^n$, ключ~$K\in\{0,1\}^{256}$ 
+и синхропосылка~$S\in\{0,1\}^{128}$.
+%
+Выходными данными является расшифрованное слово~$Y\in\ZZ_m^n$.
+
+Размер алфавита~$\ZZ_m$ и длина~$n$ входного и выходного слов 
+должны принадлежать интервалу~$\{2,3,\ldots,65536\}$.
+
+Используются алгоритмы~$\algname{belt-block}$ и~$\algname{belt-wblock}$,
+определенные в~\ref{BLOCK} и~\ref{WBLOCK}.
+
+\subsection{Подготовка входных данных}\label{FMT.Data}
+
+Длина~$n$ записывается в виде суммы~$n_1+n_2$,
+где~$n_1=\lceil n/2\rceil$, $n_2=\lfloor n/2\rfloor$.
+%
+По слагаемому~$n_i$, $i=1,2$, определяется минимальное натуральное~$b_i$ 
+такое, что
+\begin{enumerate}
+\item[1)]
+$b_i$ кратно~$64$;
+\item[2)]
+$2^{b_i}\geq m^{n_i}$.
+\end{enumerate}
+
+Синхропосылка~$S$ разбивается на фрагменты~$(S_1,S_2,S_3,S_4)=\Split(S,32)$. 
+%
+Дополнительно строятся слова~$S_0$ и~$S_5$, описывающие формат: 
+$S_0=S_5=\itob{m}_{16}\parallel\itob{n}_{16}$. 
+
+\subsection{Вспомогательные алгоритмы, переменные и обозначения}\label{FMT.Aux}
+
+{\bf Алгоритм~\algname{belt-32block}}.
+Используется алгоритм~\algname{belt-32block},
+который принимает на вход слово~$t\in\{0,1\}^{192}$ и ключ~$K\in\{0,1\}^{256}$
+и возвращает преобразованное слово~$t$. В слове~$t$ выделяются 
+фрагменты $(t_1,t_2,t_3)=\Split(t,64)$.
+
+Шаги алгоритма:
+\begin{enumerate}
+\item
+Для $i=1,2,3$:
+\begin{enumerate}
+\item
+$(t_2\parallel t_3)\leftarrow
+\algname{belt-block}(t_2\parallel t_3,K)\oplus \itob{i}_{64}$; 
+\item
+$t\leftarrow t_2\parallel t_3\parallel(t_1\oplus t_2)$.
+\end{enumerate}
+\item
+Возвратить~$t$.
+\end{enumerate}
+
+{\bf Переменная~$r$}.
+Используется переменная~$r\in\ZZ_m^n$.
+Переменная записывается в виде~$r=r_1\parallel r_2$,
+$|r_i|=n_i$.
+
+{\bf Переменные~$t_1$, $t_2$}.
+Используются переменные~$t_1\in\{0,1\}^{64+b_1}$ 
+и~$t_2\in\{0,1\}^{64+b_2}$.
+
+{\bf Обозначение~\algname{str2bin}}.
+Для~$j\in\{1,2\}$ и~$u\in\ZZ_m^*$ через~$\algname{str2bin}(u,b_j)$ 
+обозначается двоичное слово~$\itob{\btoi{u}_m}_{b_j}$.
+
+{\bf Обозначение~\algname{bin2str}}.
+Для~$j\in\{1,2\}$ и~$t\in\{0,1\}^{64*}$ через~$\algname{bin2str}(t,n_j)$ 
+обозначается слово~$\itob{\btoi{t}}_{m,n_j}$. 
+
+{\bf Обозначение~\algname{roundf}}.
+Пусть $t\in\{0,1\}^{64*}$, причем~$|t|\geq 128$.
+Обозначение~$\algname{roundf}(t,K)$ раскрывается как:
+\begin{enumerate}
+\item[1)]
+$\algname{belt-block}(t,K)$ при $|t|=128$,
+\item[2)]
+$\algname{belt-32block}(t,K)$ при $|t|=192$ и
+\item[3)]
+$\algname{belt-wblock}(t,K)$ при $|t|\geq 256$.
+\end{enumerate}
+
+\subsection{Константы}\label{FMT.Const}
+
+В алгоритмах используются константы $C_0,C_1,\ldots,C_5\in\{0,1\}^{32}$.
+Константы определяются по~первым двум строкам таблицы~\ref{Table.SBOX}
+и имеют следующий вид:
+\begin{align*}
+&
+C_0 = \hex{B194BAC8},\quad
+C_1 = \hex{0A08F53B},\quad
+C_2 = \hex{366D008E},\quad
+C_3 = \hex{584A5DE4},\\
+&
+C_4 = \hex{8504FA9D},\quad
+C_5 = \hex{1BB6C7AC}.
+\end{align*}
+
+\subsection{Алгоритм зашифрования}
+
+Зашифрование~$\algname{belt-fmt}(X,K,S)$ выполняется следующим образом:
+\begin{enumerate}
+\item
+Установить $r\leftarrow X$.
+\item
+Для $i=1,2,3$:
+\begin{enumerate}
+\item
+$t_2\leftarrow
+\algname{roundf}(\algname{str2bin}(r_2,b_2)\parallel C_{2i-2}\parallel S_{2i-2},K)$;
+\item
+$r_1\leftarrow r_1\oplus\algname{bin2str}(t_2,n_1)$;
+\item
+$t_1\leftarrow 
+\algname{roundf}(\algname{str2bin}(r_1,b_1)\parallel C_{2i-1}\parallel S_{2i-1},K)$; 
+\item
+$r_2\leftarrow r_2\oplus\algname{bin2str}(t_1,n_2)$.
+\end{enumerate}
+\item
+Установить $Y\leftarrow r_1\parallel r_2$.
+\item
+Возвратить $Y$.
+\end{enumerate}
+
+\subsection{Алгоритм расшифрования}
+
+Расшифрование~$\algname{belt-fmt}^{-1}(Y,K,S)$ выполняется следующим образом:
+\begin{enumerate}
+\item
+$r\leftarrow Y$.
+\item
+Для $i=3,2,1$:
+\begin{enumerate}
+\item
+$t_1\leftarrow 
+\algname{roundf}(\algname{str2bin}(r_1,b_1)\parallel C_{2i-1}\parallel S_{2i-1},K)$;
+\item
+$r_2\leftarrow r_2\ominus \algname{bin2str}(t_1,n_2)$;
+\item
+$t_2\leftarrow 
+\algname{roundf}(\algname{str2bin}(r_2,b_2)\parallel C_{2i-2}\parallel S_{2i-2},K)$;
+\item
+$r_1\leftarrow r_1\ominus \algname{bin2str}(t_2,n_1)$.
+\end{enumerate}
+\item
+Установить~$X\leftarrow r_1\parallel r_2$.
+\item
+Возвратить $X$.
+\end{enumerate}
+

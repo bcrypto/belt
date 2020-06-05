@@ -1,0 +1,68 @@
+\hiddensection{Дисковое шифрование}\label{TEST.DSK}
+
+В таблицах~\ref{Table.TEST.DSKE}, \ref{Table.TEST.DSKD} 
+представлены примеры дискового шифрования.
+
+\begin{table}[H]
+\caption{Дисковое зашифрование}\label{Table.TEST.DSKE}
+\begin{tabular}{|l|l|}
+\hline
+$X$ &
+$\hexz{B194BAC8~0A08F53B~366D008E~584A5DE4~8504FA9D~1BB6C7AC~252E72C2~02FDCE0D}$\\
+&
+$\hex{5BE3D612~17B96181~FE6786AD~716B890B}$\\
+\hline
+$K$ & 
+$\hex{E9DEE72C~8F0C0FA6~2DDB49F4~6F739647~06075316~ED247A37~39CBA383~03A98BF6}$\\
+\hline
+$S$ & 
+$\hex{BE329713~43FC9A48~A02A885F~194B09A1}$\\
+\ddhline
+\multicolumn{2}{|c|}{блоковое}\\
+\hline
+$Y$ &
+$\hexz{E9CAB32D~879CC50C~10378EB0~7C10F263~07257E2D~BE2B854C~BC9F3828~2D59D6A7}$\\
+&
+$\hex{7F952001~C5D1244F~53210A27~C216D4BB}$\\
+\ddhline
+\multicolumn{2}{|c|}{секторное}\\
+\hline
+$Y$ &
+$\hexz{1FCBB018~52003D60~B66024C5~08608BAA~2C21AF1E~884CF311~54D3077D~4643CF22}$\\
+&
+$\hex{49EB2F5A~68E4BA01~9D90211A~81D690D9}$\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{Дисковое расшифрование}\label{Table.TEST.DSKD}
+\begin{tabular}{|l|l|}
+\hline
+$X$ &
+$\hexz{E12BDC1A~E28257EC~703FCCF0~95EE8DF1~C1AB7638~9FE678CA~F7C6F860~D5BB9C4F}$\\
+& 
+$\hex{F33C657B~637C306A~DD4EA779~9EB23D31}$\\
+\hline
+$K$ & 
+$\hex{92BD9B1C~E5D14101~5445FBC9~5E4D0EF2~682080AA~227D642F~2687F934~90405511}$\\
+\hline
+$S$ & 
+$\hex{7ECDA4D0~1544AF8C~A58450BF~66D2E88A}$\\
+\ddhline
+\multicolumn{2}{|c|}{блоковое}\\
+\hline
+$Y$ &
+$\hexz{7041BC22~6352C706~D00EA8EF~23CFE46A~FAE11857~7D037FAC~DC36E4EC~C1F65746}$\\
+&
+$\hex{09F23694~3FB809E1~BEE4A1C6~86C13ACC}$\\
+\ddhline
+\multicolumn{2}{|c|}{секторное}\\
+\hline
+$Y$ &
+$\hexz{E9FDF3F7~88657332~E6C46FCF~5251B8A6~D43543A9~3E323383~7DB15711~83A6EF4D}$\\
+&
+$\hex{7FEB5CDF~999E1A3F~51A5A338~1BEB7FA5}$\\
+\hline
+\end{tabular}
+\end{table}

@@ -1,0 +1,98 @@
+\section{Шифрование широкого блока}\label{WBLOCK}
+
+\subsection{Интерфейс}\label{WBLOCK.IFace}
+
+Шифрование широкого блока задается алгоритмами зашифрования~$\algname{belt-wblock}$
+и расшифрования~$\algname{belt-wblock}^{-1}$.
+
+Входными данными $\algname{belt-wblock}$ являются слово~$X\in\{0,1\}^{8*}$ 
+и ключ~$K\in\{0,1\}^{256}$. Длина~$X$ должна быть не меньше~$256$.
+%
+Выходными данными является зашифрованное слово~$Y\in\{0,1\}^{|X|}$.
+
+Входными данными $\algname{belt-wblock}^{-1}$ являются зашифрованное слово~$Y\in\{0,1\}^{8*}$ 
+и ключ~$K\in\{0,1\}^{256}$. Длина~$Y$ должна быть не меньше~$256$.
+%
+Выходными данными является расшифрованное слово~$X\in\{0,1\}^{|Y|}$.
+
+Используется алгоритм~$\algname{belt-block}$, определенный в~\ref{BLOCK}.
+
+\subsection{Переменные}\label{WBLOCK.Vars}
+
+Используются переменные~$r\in\{0,1\}^*$ и~$s\in\{0,1\}^{128}$.
+Длина~$r$ совпадает с длиной входного слова~$X$ или~$Y$.
+
+\subsection{Алгоритм зашифрования}\label{WBLOCK.Encr}
+
+Зашифрование~$\algname{belt-wblock}(X,K)$ выполняется следующим образом:
+\begin{enumerate}
+\item
+Установить
+$r\leftarrow X$.
+\item
+Представить~$r$ двумя способами:
+\begin{enumerate}
+\item
+в виде набора блоков $(r_1,r_2,\ldots,r_n)=\Split(r,128)$;
+\item
+в форме $r=r^{**}\parallel r^*$, где $|r^*|=128$.
+\end{enumerate}
+\item
+Для $i=1,2,\ldots,2n$ выполнить:
+\begin{enumerate}
+\item
+$s\leftarrow r_1\oplus r_2\oplus\ldots\oplus r_{n-1}$;
+
+\item
+$r^*\leftarrow r^*\oplus \algname{belt-block}(s,K)\oplus
+\itob{i}_{128}$;
+
+\item
+$r\leftarrow \ShLo^{128}(r)$;
+
+\item
+$r^*\leftarrow s$.
+\end{enumerate}
+
+\item
+Установить
+$Y\leftarrow r$.
+
+\item
+Возвратить~$Y$.
+\end{enumerate}
+
+\subsection{Алгоритм расшифрования}\label{WBLOCK.Decr}
+
+Расшифрование~$\algname{belt-wblock}^{-1}(Y,K)$ выполняется 
+следующим образом: 
+\begin{enumerate}
+\item
+Установить $r\leftarrow Y$.
+\item
+Представить~$r$ двумя способами:
+\begin{enumerate}
+\item
+в виде набора блоков $(r_1,r_2,\ldots,r_n)=\Split(r,128)$;
+\item
+в форме $r=r^{**}\parallel r^*$, где $|r^*|=128$.
+\end{enumerate}
+\item
+Для $i=2n,\ldots,2,1$ выполнить:
+\begin{enumerate}
+\item
+$s\leftarrow r^*$;
+\item
+$r\leftarrow \ShHi^{128}(r)$;
+\item
+$r^*\leftarrow r^*\oplus \algname{belt-block}(s,K)\oplus
+\itob{i}_{128}$;
+\item
+$r_1\leftarrow s\oplus r_2\oplus\ldots\oplus r_{n-1}$.
+\end{enumerate}
+\item
+Установить
+$X\leftarrow r$.
+\item
+Возвратить~$X$.
+\end{enumerate}

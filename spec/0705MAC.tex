@@ -1,0 +1,66 @@
+\section{Выработка имитовставки}\label{MAC}
+
+\subsection{Интерфейс}\label{MAC.IFace}
+
+Выработка имитовставки задается алгоритмом~$\algname{belt-mac}$.
+
+Входными данными~$\algname{belt-mac}$ являются
+сообщение~$X\in\{0,1\}^*$ и ключ~$K\in\{0,1\}^{256}$.
+%
+Выходными данными является имитовставка~$T\in\{0,1\}^{64}$.
+
+Используется алгоритм~$\algname{belt-block}$, 
+определенный в~\ref{BLOCK}.
+
+\subsection{Вспомогательные преобразования и переменные}\label{MAC.Aux}
+
+\paragraph{Преобразования $\varphi_1$ и $\varphi_2$.}
+Преобразования $\varphi_1,\varphi_2\colon\{0,1\}^{128}\to\{0,1\}^{128}$
+действуют на слово 
+$u=u_1\parallel u_2\parallel u_3\parallel u_4$, 
+$u_i\in\{0,1\}^{32}$, по правилам:
+\begin{align*}
+\varphi_1(u)&=u_2\parallel u_3\parallel u_4\parallel(u_1\oplus u_2),\\
+\varphi_2(u)&=(u_1\oplus u_4)\parallel u_1\parallel u_2\parallel u_3.
+\end{align*}
+
+\paragraph{Отображение~$\psi$.}
+Отображение $\psi$ ставит в соответствие двоичному слову $u$,
+длина которого меньше $128$, слово
+$
+\psi(u)=u\parallel 1\parallel 0^{127-|u|}
+$
+длины~$128$.
+
+\paragraph{Переменные.}
+Используются переменные~$r,s\in\{0,1\}^{128}$.
+
+\subsection{Алгоритм выработки имитовставки}\label{MAC.Alg}
+
+Выработка имитовставки $\algname{belt-mac}(X,K)$ выполняется следующим образом:
+\begin{enumerate}
+\item
+Определить $(X_1,X_2,\ldots,X_n)=\Split(X,128)$.
+\item
+Установить
+$s\leftarrow 0^{128}$, $r\leftarrow \algname{belt-block}(s,K)$.
+\item
+Для $i=1,2,\ldots,n-1$ выполнить:
+$s\leftarrow \algname{belt-block}(s\oplus X_i,K)$.
+\item
+Если $|X_n|=128$, то 
+$s\leftarrow s\oplus X_n\oplus \varphi_1(r)$.
+\item
+Иначе, если $|X_n|<128$, то
+$s\leftarrow s\oplus\psi(X_n)\oplus\varphi_2(r)$.
+\item
+Установить
+$T\leftarrow\Lo(\algname{belt-block}(s,K), 64)$.
+\item
+Возвратить~$T$.
+\end{enumerate}
+
+\vskip9pt
+\begin{note}
+Примечание~--- Если $X=\perp$, то $n=1$ и $X_1=\perp$.
+\end{note}

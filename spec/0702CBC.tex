@@ -1,0 +1,94 @@
+\section{Шифрование в режиме сцепления блоков}\label{CBC}
+
+\subsection{Интерфейс}\label{CBC.IFace}
+
+Шифрование в режиме сцепления блоков задается алгоритмами 
+зашифрования~$\algname{belt-cbc}$ и расшифрования~$\algname{belt-cbc}^{-1}$.
+
+Входными данными $\algname{belt-cbc}$ являются сообщение~$X\in\{0,1\}^*$, 
+ключ~$K\in\{0,1\}^{256}$ и синхропосылка~$S\in\{0,1\}^{128}$. 
+%
+Длина $X$ должна быть не меньше $128$.
+%
+Выходными данными является зашифрованное сообщение~$Y\in\{0,1\}^{|X|}$.
+
+Входными данными $\algname{belt-cbc}^{-1}$ являются зашифрованное 
+сообщение~$Y\in\{0,1\}^*$, ключ~$K\in\{0,1\}^{256}$ и 
+синхропосылка~$S\in\{0,1\}^{128}$.  
+%
+Длина $Y$ должна быть не меньше $128$.
+%
+Выходными данными является расшифрованное сообщение~$X\in\{0,1\}^{|Y|}$.
+
+Используются алгоритмы~$\algname{belt-block}$ и~$\algname{belt-block}^{-1}$, 
+определенные в~\ref{BLOCK}.
+
+\subsection{Переменные}
+
+Пусть $m=|X|\bmod 128$ при зашифровании 
+и $m=|Y|\bmod 128$ при расшифровании.
+
+Если $m\neq 0$, то используется переменная~$r\in\{0,1\}^{128-m}$.
+
+\subsection{Алгоритм зашифрования}
+
+Зашифрование~$\algname{belt-cbc}(X,K,S)$ выполняется следующим образом: 
+\begin{enumerate}
+\item
+Определить $(X_1,X_2,\ldots,X_n)=\Split(X,128)$.
+\item
+Обозначить~$Y_0=S$.
+\item
+Если $|X_n|=128$, то
+\begin{enumerate}
+\item
+для $i=1,2,\ldots,n$ выполнить: 
+$Y_i\leftarrow \algname{belt-block}(X_i\oplus Y_{i-1},K)$.
+\end{enumerate}
+\item
+Иначе, если $|X_n|<128$, то
+\begin{enumerate}
+\item
+для $i=1,2,\ldots,n-2$ выполнить: 
+$Y_i\leftarrow \algname{belt-block}(X_i\oplus Y_{i-1},K)$;
+\item
+$(Y_n\parallel r)\leftarrow \algname{belt-block}(X_{n-1}\oplus Y_{n-2},K)$;
+\item
+$Y_{n-1}\leftarrow \algname{belt-block}((X_n\oplus Y_n)\parallel r,K)$.
+\end{enumerate}
+\item
+Возвратить
+$Y=Y_1\parallel Y_2\parallel\ldots\parallel Y_n$.
+\end{enumerate}
+
+\subsection{Алгоритм расшифрования}
+
+Расшифрование~$\algname{belt-cbc}^{-1}(Y,K,S)$ выполняется следующим образом: 
+\begin{enumerate}
+\item
+Определить $(Y_1,Y_2,\ldots,Y_n)=\Split(Y,128)$.
+\item
+Обозначить~$Y_0=S$.
+\item
+Если $|Y_n|=128$, то
+\begin{enumerate}
+\item
+для $i=1,2,\ldots,n$ выполнить: 
+$X_i\leftarrow \algname{belt-block}^{-1}(Y_i,K)\oplus Y_{i-1}$.
+\end{enumerate}
+\item
+Иначе, если $|Y_n|<128$, то
+\begin{enumerate}
+\item
+для $i=1,2,\ldots,n-2$ выполнить: 
+$X_i\leftarrow \algname{belt-block}^{-1}(Y_i,K)\oplus Y_{i-1}$;
+\item
+$(X_n\parallel r)\leftarrow \algname{belt-block}^{-1}(Y_{n-1},K)\oplus 
+(Y_n\parallel 0^{128-|Y_n|})$;
+\item
+$X_{n-1}\leftarrow \algname{belt-block}^{-1}(Y_n\parallel r,K)\oplus Y_{n-2}$.
+\end{enumerate}
+\item
+Возвратить
+$X=X_1\parallel X_2\parallel\ldots\parallel X_n$.
+\end{enumerate}

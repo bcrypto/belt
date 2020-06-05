@@ -1,0 +1,200 @@
+\hiddensection{Шифрование блока}\label{TEST.Block}
+
+В таблице~\ref{Table.TEST.BlockE} представлен пример зашифрования блока.
+%
+Значения переменных $a$, $b$, $c$, $d$ после выполнения тактов
+зашифрования указаны в таблице~\ref{Table.TEST.BlockERounds}.
+%
+Значения переменных~$a$, $b$, $c$, $d$ после выполнения шагов 
+первого такта зашифрования представлены 
+в таблице~\ref{Table.TEST.BlockEFirstRound}. 
+Дополнительная переменная~$e$ после выполнения шага~4) 
+принимает значение~$\hex{20072EC1}$.
+
+\begin{table}[H]
+\caption{Зашифрование блока}\label{Table.TEST.BlockE}
+\begin{tabular}{|l|l|}
+\hline
+$X$ &
+$\hex{B194BAC8~0A08F53B~366D008E~584A5DE4}$\\
+\hline
+$K$ & 
+$\hex{E9DEE72C~8F0C0FA6~2DDB49F4~6F739647~06075316~ED247A37~39CBA383~03A98BF6}$\\
+\dhline
+$Y$ &
+$\hex{69CCA1C9~3557C9E3~D66BC3E0~FA88FA6E}$\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{Такты зашифрования}\label{Table.TEST.BlockERounds}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Номер такта  & \multicolumn{4}{|c|}{Переменные}\\
+ \cline{2-5}
+$i$  &$a$&$b$&$c$&$d$ \\
+\hline
+\hline
+$1$&$\hex{FB56C62C}$&$\hex{CA8EEEB7}$&$\hex{09BAD702}$&$\hex{CC4E441D}$\\
+\hline                                                       
+$2$&$\hex{7280A094}$&$\hex{47BB9CD6}$&$\hex{5BD130B1}$&$\hex{ADA525A4}$\\
+\hline                                                       
+$3$&$\hex{00AB0E4D}$&$\hex{4B4A6113}$&$\hex{73D9CD18}$&$\hex{57E54345}$\\
+\hline                                                       
+$4$&$\hex{A50D12EF}$&$\hex{8CD05085}$&$\hex{99A672B7}$&$\hex{D9A0C0E4}$\\
+\hline                                                       
+$5$&$\hex{21C32063}$&$\hex{44712C59}$&$\hex{EC21160A}$&$\hex{DE08AAB9}$\\
+\hline                                                       
+$6$&$\hex{B5279D32}$&$\hex{D4579966}$&$\hex{251E3B2D}$&$\hex{F8EF6A0F}$\\
+\hline                                                       
+$7$&$\hex{26349022}$&$\hex{08C5172E}$&$\hex{705A63C6}$&$\hex{5CA6AD61}$\\
+\hline                                                       
+$8$&$\hex{D66BC3E0}$&$\hex{69CCA1C9}$&$\hex{FA88FA6E}$&$\hex{3557C9E3}$\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{Первый такт зашифрования}\label{Table.TEST.BlockEFirstRound}
+\begin{tabular}{|rl|c|c|c|c|}
+\hline
+\multicolumn{2}{|c}{Шаг вычислений}  & \multicolumn{4}{|c|}{Переменные}\\
+\cline{3-6}
+& & $a$&$b$&$c$&$d$\\
+\hline
+\hline
+1) & $b\leftarrow b\oplus G_5(a\boxplus k[1])$ & 
+$\hex{B194BAC8}$ &
+$\hex{66DC9868}$ &
+$\hex{366D008E}$ &
+$\hex{584A5DE4}$\\
+%
+\hline
+2) & $c\leftarrow c\oplus G_{21}(d\boxplus k[2])$ & 
+$\hex{B194BAC8}$ &
+$\hex{66DC9868}$ &
+$\hex{F95E6998}$ &
+$\hex{584A5DE4}$\\
+%
+\hline
+3) & $a\leftarrow a\boxminus G_{13}(b\boxplus k[3])$ & 
+$\hex{09BAD702}$ &
+$\hex{66DC9868}$ &
+$\hex{F95E6998}$ &
+$\hex{584A5DE4}$\\
+%
+\hline
+4) & $e\leftarrow G_{21}(b\boxplus c\boxplus k[4])\oplus\itob{1}_{32}$ & 
+$\hex{09BAD702}$ &
+$\hex{66DC9868}$ &
+$\hex{F95E6998}$ &
+$\hex{584A5DE4}$\\
+%
+\hline
+5) & $b\leftarrow b\boxplus e$ &
+$\hex{09BAD702}$ &
+$\hex{86E3C629}$ &
+$\hex{F95E6998}$ &
+$\hex{584A5DE4}$\\
+%
+\hline
+6) & $c\leftarrow c\boxminus e$ &
+$\hex{09BAD702}$ &
+$\hex{86E3C629}$ &
+$\hex{D9573BD7}$ &
+$\hex{584A5DE4}$\\
+%
+\hline
+7) & $d\leftarrow d\boxplus G_{13}(c\boxplus k[5])$ &
+$\hex{09BAD702}$ &
+$\hex{86E3C629}$ &
+$\hex{D9573BD7}$ &
+$\hex{CA8EEEB7}$\\
+%
+\hline
+8) & $b\leftarrow b\oplus G_{21}(a\boxplus k[6])$ &
+$\hex{09BAD702}$ &
+$\hex{FB56C62C}$ &
+$\hex{D9573BD7}$ &
+$\hex{CA8EEEB7}$\\
+%
+\hline
+9) & $c\leftarrow c\oplus G_{5}(d\boxplus k[7])$ &
+$\hex{09BAD702}$ &
+$\hex{FB56C62C}$ &
+$\hex{CC4E441D}$ &
+$\hex{CA8EEEB7}$\\
+%
+\hline
+10) & $a\leftrightarrow b$ &
+$\hex{FB56C62C}$ &
+$\hex{09BAD702}$ &
+$\hex{CC4E441D}$ &
+$\hex{CA8EEEB7}$\\
+%
+\hline
+11) & $c\leftrightarrow d$ &
+$\hex{FB56C62C}$ &
+$\hex{09BAD702}$ &
+$\hex{CA8EEEB7}$ &
+$\hex{CC4E441D}$\\
+%
+\hline
+12) & $b\leftrightarrow c$ &
+$\hex{FB56C62C}$ &
+$\hex{CA8EEEB7}$ &
+$\hex{09BAD702}$ &
+$\hex{CC4E441D}$\\
+\hline
+\end{tabular}
+\end{table}
+
+В таблице~\ref{Table.TEST.BlockD} представлен пример расшифрования блока.
+%
+Значения переменных $a$, $b$, $c$, $d$ после выполнения тактов 
+расшифрования указаны в таблице~\ref{Table.TEST.BlockDRounds}.
+
+\begin{table}[H]
+\caption{Расшифрование блока}\label{Table.TEST.BlockD}
+\begin{tabular}{|l|l|}
+\hline
+$Y$ &
+$\hex{E12BDC1A~E28257EC~703FCCF0~95EE8DF1}$\\
+\hline
+$K$ & 
+$\hex{92BD9B1C~E5D14101~5445FBC9~5E4D0EF2~682080AA~227D642F~2687F934~90405511}$\\
+\dhline
+$X$ &
+$\hex{0DC53006~00CAB840~B38448E5~E993F421}$\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{Такты расшифрования}\label{Table.TEST.BlockDRounds}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Номер такта  & \multicolumn{4}{|c|}{Переменные}\\
+\cline{2-5}
+$i$  &$a$&$b$&$c$&$d$\\
+\hline
+\hline
+$8$&$\hex{A174D6FC}$&$\hex{377EB086}$&$\hex{BA7C2D07}$&$\hex{0DAA044B}$\\
+\hline                                                      
+$7$&$\hex{B01E75B3}$&$\hex{0F53A46F}$&$\hex{8893A01F}$&$\hex{A4E35989}$\\
+\hline                                                      
+$6$&$\hex{B5B85383}$&$\hex{33D8BC0E}$&$\hex{9A46CD5F}$&$\hex{F8D778D4}$\\
+\hline                                                      
+$5$&$\hex{07234634}$&$\hex{723B48FC}$&$\hex{04690666}$&$\hex{ADB565F3}$\\
+\hline                                                      
+$4$&$\hex{3141A829}$&$\hex{2AD3FB40}$&$\hex{D30032B1}$&$\hex{4D336185}$\\
+\hline                                                      
+$3$&$\hex{ADA2EC35}$&$\hex{DADBC720}$&$\hex{3421AC22}$&$\hex{22EC7943}$\\
+\hline                                                      
+$2$&$\hex{9DAC9289}$&$\hex{89A2E5ED}$&$\hex{9253A0F0}$&$\hex{3B871FA3}$\\
+\hline                                                      
+$1$&$\hex{00CAB840}$&$\hex{E993F421}$&$\hex{0DC53006}$&$\hex{B38448E5}$\\
+\hline
+\end{tabular}
+\end{table}

@@ -1,0 +1,64 @@
+\begin{appendix}{Б}{рекомендуемое}{Модуль АСН.1}\label{ASN}
+
+\mbox{}
+
+В модуле АСН.1 алгоритмам настоящего стандарта назначаются идентификаторы.
+Назначение выполняется указанием имени алгоритма (группы алгоритмов) и 
+соответствующего идентификатора. Имя представляют собой объединение 
+короткого имени алгоритма, указанного в интерфейсе, с 3-символьным 
+суффиксом~\algname{128}, \algname{192} или \algname{256}. Суффикс обозначает 
+длину используемого ключа. Суффикс не добавляется к именам 
+\algname{belt-compress}, \algname{belt-hash}, \algname{belt-keyexpand}, 
+\algname{belt-keyrep}.
+
+Группа может включать два алгоритма: зашифрования (установки защиты)
+и расшифрования (снятия защиты). Идентификатор относится к обоим 
+алгоритмам группы.
+
+В модуле АСН.1 дополнительно определяются форматы следующих параметров:
+{\tabcolsep 0pt
+\begin{longtable}{lrp{14cm}}
+\texttt{IV} &\mbox{~~~~~}&
+синхропосылка в алгоритмах
+\algname{belt-cbcXXX},
+\algname{belt-cfbXXX},
+\algname{belt-ctrXXX},
+\algname{belt-dwpXXX}, 
+\algname{belt-cheXXX}, 
+\algname{belt-bdeXXX},
+\algname{belt-sdeXXX},
+\algname{belt-fmtXXX};\\
+%
+\texttt{KeyHeader} &&
+заголовок ключа в алгоритмах 
+\algname{belt-kwpXXX},
+\algname{belt-keyrep};\\
+%
+\texttt{KeyLevel} &&
+уровень ключа в алгоритме
+\algname{belt-keyrep}.
+\end{longtable}
+}
+
+Если алгоритм шифрования описывается типом
+\begin{verbatim}
+AlgorithmIdentifier ::= SEQUENCE {
+  algorithm OBJECT IDENTIFIER,
+  parameters ANY DEFINED BY algorithm OPTIONAL
+}   
+\end{verbatim}
+то в компоненте~\texttt{algorithm} должен указываться идентификатор
+алгоритма, а в компоненте~\texttt{parameters}~--- используемая 
+синхропосылка типа~\texttt{IV}.
+%
+Если синхропосылка не используется, то~компонент~\texttt{parameters}
+должен быть опущен.
+%
+Отсутствие~\texttt{parameters} при описании алгоритмов~\algname{belt-fmtXXX}
+означает, что используется нулевая синхропосылка.
+
+Модуль АСН.1 имеет следующий вид:
+
+\verbatiminput{belt-module-v2.asn}
+
+\end{appendix}

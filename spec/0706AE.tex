@@ -1,0 +1,312 @@
+\section{Аутентифицированное шифрование данных}\label{AE}
+
+\subsection{Интерфейс}\label{AE.IFace}
+
+Аутентифицированное шифрование данных задается алгоритмами установки 
+и снятия защиты. Первая схема аутентифицированного шифрования
+представлена алгоритмами $\algname{belt-dwp}$ и~$\algname{belt-dwp}^{-1}$,
+вторая~--- алгоритмами $\algname{belt-che}$ и~$\algname{belt-che}^{-1}$. 
+
+Входными данными алгоритма установки защиты ($\algname{belt-dwp}$ или
+$\algname{belt-che}$) являются сообщение~$X\in\{0,1\}^*$, ассоциированные
+данные~$I\in\{0,1\}^*$, ключ~$K\in\{0,1\}^{256}$ и 
+синхропосылка~$S\in\{0,1\}^{128}$. Длины~$X$ и~$I$ должны быть меньше~$2^{64}$. 
+%
+Выходными данными являются зашифрованное сообщение~$Y\in\{0,1\}^{|X|}$
+и имитовставка~$T\in\{0,1\}^{64}$.
+
+Входными данными алгоритма снятия защиты ($\algname{belt-dwp}^{-1}$ или
+$\algname{belt-che}^{-1}$) являются зашифрованное
+сообщение~$Y\in\{0,1\}^*$, ассоциированные данные~$I\in\{0,1\}^*$,
+имитовставка~$T\in\{0,1\}^{64}$, ключ~$K\in\{0,1\}^{256}$ и синхропосылка
+$S\in\{0,1\}^{128}$.
+%
+Длины $Y$ и $I$ должны быть меньше $2^{64}$.
+%
+Выходными данными является либо признак ошибки~$\perp$, либо расшифрованное 
+сообщение~$X\in\{0,1\}^{|Y|}$. 
+%
+Возврат~$\perp$ означает нарушение целостности входных данных.
+
+Используется алгоритм~$\algname{belt-block}$, 
+определенный в~\ref{BLOCK}.
+
+\subsection{Переменные и константы}\label{AE.Vars}
+
+Используются переменные~$s,t\in\{0,1\}^{128}$.
+
+В алгоритмах схемы~1 дополнительно используется переменная~$r\in\{0,1\}^{128}$. 
+
+В алгоритмах схемы~2 используется слово~$C=\hex{02}\parallel 0^{120}$.
+Слово представляет многочлен~$C(x)=x$ (см.~\ref{DEFS.Poly}).
+
+\subsection{Алгоритм установки защиты (схема 1)}\label{AE.DWP.Wrap}
+
+Установка защиты~$\algname{belt-dwp}(X,I,K,S)$ выполняется следующим образом:
+\begin{enumerate}
+\item
+Определить 
+\begin{enumerate}
+\item
+$(X_1,X_2,\ldots,X_n)=\Splitz(X, 128)$;
+\item
+$(I_1,I_2,\ldots,I_m)=\Splitz(I, 128)$. 
+\end{enumerate}
+\item
+Установить
+\begin{enumerate}
+\item
+$s\leftarrow\algname{belt-block}(S,K)$;
+\item
+$r\leftarrow \algname{belt-block}(s,K)$;
+\item
+$t\leftarrow\hex{B194BAC80A08F53B366D008E584A5DE4}$
+(см. строку 1 таблицы~\ref{Table.SBOX}).
+\end{enumerate}
+
+\item
+Для $i=1,2,\ldots,m$ выполнить:
+\begin{enumerate}
+\item
+$t\leftarrow t\oplus (I_i\parallel 0^{128-|I_i|})$;
+\item
+$t\leftarrow t\ast r$.
+\end{enumerate}
+
+\item
+Для $i=1,2,\ldots,n$ выполнить:
+\begin{enumerate}
+\item
+$s\leftarrow s\boxplus\itob{1}_{128}$;
+\item
+$Y_i\leftarrow X_i\oplus\Lo(\algname{belt-block}(s,K), |X_i|)$;
+\item
+$t\leftarrow t\oplus (Y_i\parallel 0^{128-|Y_i|})$;
+\item
+$t\leftarrow t\ast r$.
+\end{enumerate}
+
+\item
+Установить
+$t\leftarrow t\oplus 
+(\itob{|I|}_{64}\parallel\itob{|X|}_{64})$.
+\item
+Установить
+$t\leftarrow \algname{belt-block}(t\ast r,K)$.
+\item
+Установить
+$T\leftarrow \Lo(t, 64)$.
+\item
+Возвратить~$(Y,T)$, 
+где~$Y=Y_1\parallel Y_2\parallel\ldots\parallel Y_n$.
+\end{enumerate}
+
+\subsection{Алгоритм снятия защиты (схема 1)}\label{AE.DWP.Unwrap}
+
+Снятие защиты~$\algname{belt-dwp}^{-1}(Y,I,T,K,S)$ выполняется следующим образом:
+\begin{enumerate}
+\item
+Определить 
+\begin{enumerate}
+\item
+$(Y_1,Y_2,\ldots,Y_n)=\Splitz(Y, 128)$;
+\item
+$(I_1,I_2,\ldots,I_m)=\Splitz(I, 128)$. 
+\end{enumerate}
+\item
+Установить
+\begin{enumerate}
+\item
+$s\leftarrow\algname{belt-block}(S,K)$;
+\item
+$r\leftarrow \algname{belt-block}(s,K)$;
+\item
+$t\leftarrow\hex{B194BAC80A08F53B366D008E584A5DE4}$.
+\end{enumerate}
+
+\item
+Для $i=1,2,\ldots,m$ выполнить:
+\begin{enumerate}
+\item
+$t\leftarrow t\oplus (I_i\parallel 0^{128-|I_i|})$;
+\item
+$t\leftarrow t\ast r$.
+\end{enumerate}
+
+\item\label{Step.AE.DWP.StepA}
+Для $i=1,2,\ldots,n$ выполнить:
+\begin{enumerate}
+\item
+$t\leftarrow t\oplus (Y_i\parallel 0^{128-|Y_i|})$;
+\item
+$t\leftarrow t\ast r$.
+\end{enumerate}
+
+\item
+Установить
+$t\leftarrow t\oplus 
+(\itob{|I|}_{64}\parallel\itob{|Y|}_{64})$.
+
+\item
+Установить
+$t\leftarrow \algname{belt-block}(t\ast r,K)$.
+
+\item\label{Step.AE.DWP.VerifyMAC}
+Если $T\neq \Lo(t, 64)$, то возвратить~$\perp$.
+
+\item\label{Step.AE.DWP.StepD}
+Для $i=1,2,\ldots,n$ выполнить:
+\begin{enumerate}
+\item
+$s\leftarrow s\boxplus\itob{1}_{128}$;
+\item
+$X_i\leftarrow Y_i\oplus \Lo(\algname{belt-block}(s,K),|Y_i|)$.
+\end{enumerate}
+
+\item
+Возвратить~$X=X_1\parallel X_2\parallel\ldots\parallel X_n$.
+\end{enumerate}
+
+\subsection{Алгоритм установки защиты (схема 2)}\label{AE.CHE.Wrap}
+
+Установка защиты~$\algname{belt-che}(X,I,K,S)$ выполняется следующим образом:
+\begin{enumerate}
+\item
+Определить 
+\begin{enumerate}
+\item
+$(X_1,X_2,\ldots,X_n)=\Splitz(X, 128)$;
+\item
+$(I_1,I_2,\ldots,I_m)=\Splitz(I, 128)$. 
+\end{enumerate}
+\item
+Установить
+\begin{enumerate}
+\item
+$s\leftarrow\algname{belt-block}(S,K)$;
+\item
+$r\leftarrow s$;
+\item
+$t\leftarrow\hex{B194BAC80A08F53B366D008E584A5DE4}$.
+\end{enumerate}
+
+\item
+Для $i=1,2,\ldots,m$ выполнить:
+\begin{enumerate}
+\item
+$t\leftarrow t\oplus (I_i\parallel 0^{128-|I_i|})$;
+\item
+$t\leftarrow t\ast r$.
+\end{enumerate}
+
+\item
+Для $i=1,2,\ldots,n$ выполнить:
+\begin{enumerate}
+\item
+$s\leftarrow (s\ast C)\oplus\itob{1}_{128}$;
+\item
+$Y_i\leftarrow X_i\oplus\Lo(\algname{belt-block}(s,K), |X_i|)$;
+\item
+$t\leftarrow t\oplus (Y_i\parallel 0^{128-|Y_i|})$;
+\item
+$t\leftarrow t\ast r$.
+\end{enumerate}
+
+\item
+Установить
+$t\leftarrow t\oplus 
+(\itob{|I|}_{64}\parallel\itob{|X|}_{64})$.
+\item
+Установить
+$t\leftarrow \algname{belt-block}(t\ast r,K)$.
+\item
+Установить
+$T\leftarrow \Lo(t, 64)$.
+\item
+Возвратить~$(Y,T)$, 
+где~$Y=Y_1\parallel Y_2\parallel\ldots\parallel Y_n$.
+\end{enumerate}
+
+\subsection{Алгоритм снятия защиты (схема 2)}\label{AE.CHE.Unwrap}
+
+Снятие защиты~$\algname{belt-che}^{-1}(Y,I,T,K,S)$ выполняется следующим образом:
+\begin{enumerate}
+\item
+Определить 
+\begin{enumerate}
+\item
+$(Y_1,Y_2,\ldots,Y_n)=\Splitz(Y, 128)$;
+\item
+$(I_1,I_2,\ldots,I_m)=\Splitz(I, 128)$. 
+\end{enumerate}
+\item
+Установить
+\begin{enumerate}
+\item
+$s\leftarrow\algname{belt-block}(S,K)$;
+\item
+$r\leftarrow s$;
+\item
+$t\leftarrow\hex{B194BAC80A08F53B366D008E584A5DE4}$.
+\end{enumerate}
+
+\item
+Для $i=1,2,\ldots,m$ выполнить:
+\begin{enumerate}
+\item
+$t\leftarrow t\oplus (I_i\parallel 0^{128-|I_i|})$;
+\item
+$t\leftarrow t\ast r$.
+\end{enumerate}
+
+\item\label{Step.AE.CHE.StepA}
+Для $i=1,2,\ldots,n$ выполнить:
+\begin{enumerate}
+\item
+$t\leftarrow t\oplus (Y_i\parallel 0^{128-|Y_i|})$;
+\item
+$t\leftarrow t\ast r$.
+\end{enumerate}
+
+\item
+Установить
+$t\leftarrow t\oplus (\itob{|I|}_{64}\parallel\itob{|Y|}_{64})$.
+
+\item
+Установить
+$t\leftarrow\algname{belt-block}(t\ast r,K)$.
+
+\item\label{Step.AE.CHE.VerifyMAC}
+Если $T\neq\Lo(t, 64)$, то возвратить~$\perp$.
+
+\item\label{Step.AE.CHE.StepD}
+Для $i=1,2,\ldots,n$ выполнить:
+\begin{enumerate}
+\item
+$s\leftarrow (s\ast C)\oplus\itob{1}_{128}$;
+\item
+$X_i\leftarrow Y_i\oplus \Lo(\algname{belt-block}(s,K), |Y_i|)$.
+\end{enumerate}
+\item
+Возвратить~$X=X_1\parallel X_2\parallel\ldots\parallel X_n$.
+\end{enumerate}
+
+\vskip6pt
+
+\begin{note}
+Примечание~1~--- Если длина имитовставки, вычисляемой при установке защиты, 
+сокращается до~$n$ битов (см.~\ref{COMMON.MAC}), то на вход алгоритма снятия 
+защиты должна подаваться сокращенная имитовставка, а проверка~$T\neq\Lo(t,64)$ 
+на шаге~\ref{Step.AE.DWP.VerifyMAC} этого алгоритма должна быть изменена на 
+проверку~$T\neq\Lo(t,n)$.
+\end{note}
+
+\vskip6pt
+
+\begin{note}
+Примечание~2~--- В алгоритме снятия защиты расшифрование на 
+шаге~\ref{Step.AE.DWP.StepD} может выполняться одновременно 
+с вычислением имитовставки на шаге~\ref{Step.AE.DWP.StepA}. 
+Однако расшифрование может оказаться бесполезным, если на 
+шаге~\ref{Step.AE.DWP.VerifyMAC} имитовставка окажется некорректной.
+\end{note}

@@ -1,0 +1,65 @@
+\section{Шифрование в режиме счетчика}\label{CTR}
+
+\subsection{Интерфейс}\label{CTR.IFace}
+
+Шифрование в режиме счетчика задается алгоритмами 
+зашифрования~$\algname{belt-ctr}$ и расшифрования~$\algname{belt-ctr}^{-1}$.
+
+Входными данными $\algname{belt-ctr}$ являются сообщение~$X\in\{0,1\}^*$, 
+ключ~$K\in\{0,1\}^{256}$ и синхропосылка~$S\in\{0,1\}^{128}$.
+%
+Выходными данными является зашифрованное сообщение~$Y\in\{0,1\}^{|X|}$.
+
+Входными данными $\algname{belt-ctr}^{-1}$ являются зашифрованное 
+сообщение~$Y\in\{0,1\}^*$, ключ~$K\in\{0,1\}^{256}$ и 
+синхропосылка~$S\in\{0,1\}^{128}$. 
+%
+Выходными данными является расшифрованное сообщение~$X\in\{0,1\}^{|Y|}$.
+
+Используется алгоритм~$\algname{belt-block}$, определенный в~\ref{BLOCK}.
+
+\subsection{Переменные}\label{CTR.Vars}
+
+Используется переменная~$s\in\{0,1\}^{128}$.
+
+\subsection{Алгоритм зашифрования}\label{CTR.Encr}
+
+Зашифрование~$\algname{belt-ctr}(X,K,S)$ выполняется следующим образом:
+\begin{enumerate}
+\item
+Определить $(X_1,X_2,\ldots,X_n)=\Splitz(X,128)$.
+\item
+Установить 
+$s\leftarrow \algname{belt-block}(S,K)$.
+\item
+Для $i=1,2,\ldots,n$ выполнить:
+\begin{enumerate}
+\item
+$s\leftarrow s\boxplus\itob{1}_{128}$,
+\item
+$Y_i\leftarrow X_i\oplus\Lo(\algname{belt-block}(s,K),|X_i|)$.
+\end{enumerate}
+\item
+Возвратить~$Y=Y_1\parallel Y_2\parallel\ldots\parallel Y_n$.
+\end{enumerate}
+
+\subsection{Алгоритм расшифрования}\label{CTR.Decr}
+
+Расшифрование~$\algname{belt-ctr}^{-1}(Y,K,S)$ выполняется следующим образом:
+\begin{enumerate}
+\item
+Определить $(Y_1,Y_2,\ldots,Y_n)=\Splitz(Y,128)$.
+\item
+Установить 
+$s\leftarrow \algname{belt-block}(S,K)$.
+\item
+Для $i=1,2,\ldots,n$ выполнить:
+\begin{enumerate}
+\item
+$s\leftarrow s\boxplus\itob{1}_{128}$,
+\item
+$X_i\leftarrow Y_i\oplus\Lo(\algname{belt-block}(s,K),|Y_i|)$.
+\end{enumerate}
+\item
+Возвратить~$X=X_1\parallel X_2\parallel\ldots\parallel X_n$.
+\end{enumerate}
