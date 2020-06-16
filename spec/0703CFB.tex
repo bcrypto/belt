@@ -23,7 +23,7 @@
 Зашифрование~$\algname{belt-cfb}(X,K,S)$ выполняется следующим образом: 
 \begin{enumerate}
 \item
-Определить~$(X_1,X_2,\ldots,X_n)=\Splitz(X, 128)$.
+Определить~$(X_1,X_2,\ldots,X_n)=\Split(X, 128)$.
 \item
 Обозначить~$Y_0=S$.
 \item
@@ -39,7 +39,7 @@ $Y=Y_1\parallel Y_2\parallel\ldots\parallel Y_n$.
 Расшифрование~$\algname{belt-cfb}^{-1}(Y,K,S)$ выполняется следующим образом: 
 \begin{enumerate}
 \item
-Определить~$(Y_1,Y_2,\ldots,Y_n)=\Splitz(Y, 128)$.
+Определить~$(Y_1,Y_2,\ldots,Y_n)=\Split(Y, 128)$.
 \item
 Обозначить~$Y_0=S$.
 \item

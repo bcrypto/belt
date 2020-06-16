@@ -27,7 +27,7 @@
 Зашифрование~$\algname{belt-ctr}(X,K,S)$ выполняется следующим образом:
 \begin{enumerate}
 \item
-Определить $(X_1,X_2,\ldots,X_n)=\Splitz(X,128)$.
+Определить $(X_1,X_2,\ldots,X_n)=\Split(X,128)$.
 \item
 Установить 
 $s\leftarrow \algname{belt-block}(S,K)$.
@@ -48,7 +48,7 @@ $Y_i\leftarrow X_i\oplus\Lo(\algname{belt-block}(s,K),|X_i|)$.
 Расшифрование~$\algname{belt-ctr}^{-1}(Y,K,S)$ выполняется следующим образом:
 \begin{enumerate}
 \item
-Определить $(Y_1,Y_2,\ldots,Y_n)=\Splitz(Y,128)$.
+Определить $(Y_1,Y_2,\ldots,Y_n)=\Split(Y,128)$.
 \item
 Установить 
 $s\leftarrow \algname{belt-block}(S,K)$.
