@@ -1,6 +1,5 @@
-\NeedsTeXFormat{LaTeX2e}% LaTeX 2.09 can't be used (nor non-LaTeX)
-[1994/12/01]% LaTeX date must December 1994 or later
-\ProvidesPackage{_defs}[1999/11/29 v1.2d]
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{_defs}
 
 %%%%%%%%%%%  Format %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -39,15 +38,10 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%% Renew %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\<}{<<}
-\renewcommand{\>}{>>}
 \renewcommand{\le}{\leqslant}
 \renewcommand{\leq}{\leqslant}
 \renewcommand{\ge}{\geqslant}
 \renewcommand{\geq}{\geqslant}
-\renewcommand{\atop}[2]{\genfrac{}{}{0pt}{}{#1}{#2}}
-\renewcommand{\pmod}[1]{\allowbreak\ifinner\mkern4mu\else\mkern9mu\fi
-({\rm mod}\,\,#1)}
 \providecommand{\No}{\textnumero}
 
 %%%%%%%%%%%%%%%%%%%%%%%% Appendix %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
