@@ -36,14 +36,14 @@
 \item
 Определить $(X_1,X_2,\ldots,X_n)=\Split(X,128)$.
 \item
-Если $|X_n|=128$, то
+Если $|X_n|=128$, то:
 \begin{enumerate}
 \item
 для $i=1,2,\ldots,n$ выполнить: $Y_i\leftarrow \algname{belt-block}(X_i,K)$.
 \end{enumerate}
 
 \item
-Иначе, если $|X_n|<128$, то
+Иначе, если $|X_n|<128$, то:
 \begin{enumerate}
 \item
 для $i=1,2,\ldots,n-2$ выполнить: $Y_i\leftarrow \algname{belt-block}(X_i,K)$;
@@ -66,13 +66,13 @@ $Y_{n-1}\leftarrow \algname{belt-block}(X_n\parallel r,K)$.
 \item
 Определить $(Y_1,Y_2,\ldots,Y_n)=\Split(Y,128)$.
 \item
-Если $|Y_n|=128$, то
+Если $|Y_n|=128$, то:
 \begin{enumerate}
 \item
 для $i=1,2,\ldots,n$ выполнить: $X_i\leftarrow \algname{belt-block}^{-1}(Y_i,K)$.
 \end{enumerate}
 \item
-Иначе, если $|Y_n|<128$, то
+Иначе, если $|Y_n|<128$, то:
 \begin{enumerate}
 \item
 для $i=1,2,\ldots,n-2$ 

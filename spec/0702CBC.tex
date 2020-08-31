@@ -39,14 +39,14 @@
 \item
 Обозначить~$Y_0=S$.
 \item
-Если $|X_n|=128$, то
+Если $|X_n|=128$, то:
 \begin{enumerate}
 \item
 для $i=1,2,\ldots,n$ выполнить: 
 $Y_i\leftarrow \algname{belt-block}(X_i\oplus Y_{i-1},K)$.
 \end{enumerate}
 \item
-Иначе, если $|X_n|<128$, то
+Иначе, если $|X_n|<128$, то:
 \begin{enumerate}
 \item
 для $i=1,2,\ldots,n-2$ выполнить: 
@@ -70,14 +70,14 @@ $Y=Y_1\parallel Y_2\parallel\ldots\parallel Y_n$.
 \item
 Обозначить~$Y_0=S$.
 \item
-Если $|Y_n|=128$, то
+Если $|Y_n|=128$, то:
 \begin{enumerate}
 \item
 для $i=1,2,\ldots,n$ выполнить: 
 $X_i\leftarrow \algname{belt-block}^{-1}(Y_i,K)\oplus Y_{i-1}$.
 \end{enumerate}
 \item
-Иначе, если $|Y_n|<128$, то
+Иначе, если $|Y_n|<128$, то:
 \begin{enumerate}
 \item
 для $i=1,2,\ldots,n-2$ выполнить: 

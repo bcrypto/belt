@@ -29,7 +29,7 @@ $\algname{belt-fmt}$ и расшифрования~$\algname{belt-fmt}^{-1}$.
 где~$n_1=\lceil n/2\rceil$, $n_2=\lfloor n/2\rfloor$.
 %
 По слагаемому~$n_i$, $i=1,2$, определяется минимальное натуральное~$b_i$ 
-такое, что
+такое, что:
 \begin{enumerate}
 \item[1)]
 $b_i$ кратно~$64$;
@@ -87,7 +87,7 @@ $|r_i|=n_i$.
 Обозначение~$\algname{roundf}(t,K)$ раскрывается как:
 \begin{enumerate}
 \item[1)]
-$\algname{belt-block}(t,K)$ при $|t|=128$,
+$\algname{belt-block}(t,K)$ при $|t|=128$;
 \item[2)]
 $\algname{belt-32block}(t,K)$ при $|t|=192$ и
 \item[3)]

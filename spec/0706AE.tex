@@ -45,7 +45,7 @@ $S\in\{0,1\}^{128}$.
 Установка защиты~$\algname{belt-dwp}(X,I,K,S)$ выполняется следующим образом:
 \begin{enumerate}
 \item
-Определить 
+Определить: 
 \begin{enumerate}
 \item
 $(X_1,X_2,\ldots,X_n)=\Split(X, 128)$;
@@ -53,7 +53,7 @@ $(X_1,X_2,\ldots,X_n)=\Split(X, 128)$;
 $(I_1,I_2,\ldots,I_m)=\Split(I, 128)$. 
 \end{enumerate}
 \item
-Установить
+Установить:
 \begin{enumerate}
 \item
 $s\leftarrow\algname{belt-block}(S,K)$;
@@ -106,7 +106,7 @@ $T\leftarrow \Lo(t, 64)$.
 Снятие защиты~$\algname{belt-dwp}^{-1}(Y,I,T,K,S)$ выполняется следующим образом:
 \begin{enumerate}
 \item
-Определить 
+Определить: 
 \begin{enumerate}
 \item
 $(Y_1,Y_2,\ldots,Y_n)=\Split(Y, 128)$;
@@ -114,7 +114,7 @@ $(Y_1,Y_2,\ldots,Y_n)=\Split(Y, 128)$;
 $(I_1,I_2,\ldots,I_m)=\Split(I, 128)$. 
 \end{enumerate}
 \item
-Установить
+Установить:
 \begin{enumerate}
 \item
 $s\leftarrow\algname{belt-block}(S,K)$;
@@ -172,7 +172,7 @@ $X_i\leftarrow Y_i\oplus \Lo(\algname{belt-block}(s,K),|Y_i|)$.
 Установка защиты~$\algname{belt-che}(X,I,K,S)$ выполняется следующим образом:
 \begin{enumerate}
 \item
-Определить 
+Определить: 
 \begin{enumerate}
 \item
 $(X_1,X_2,\ldots,X_n)=\Split(X, 128)$;
@@ -180,7 +180,7 @@ $(X_1,X_2,\ldots,X_n)=\Split(X, 128)$;
 $(I_1,I_2,\ldots,I_m)=\Split(I, 128)$. 
 \end{enumerate}
 \item
-Установить
+Установить:
 \begin{enumerate}
 \item
 $s\leftarrow\algname{belt-block}(S,K)$;
@@ -232,7 +232,7 @@ $T\leftarrow \Lo(t, 64)$.
 Снятие защиты~$\algname{belt-che}^{-1}(Y,I,T,K,S)$ выполняется следующим образом:
 \begin{enumerate}
 \item
-Определить 
+Определить: 
 \begin{enumerate}
 \item
 $(Y_1,Y_2,\ldots,Y_n)=\Split(Y, 128)$;
@@ -240,7 +240,7 @@ $(Y_1,Y_2,\ldots,Y_n)=\Split(Y, 128)$;
 $(I_1,I_2,\ldots,I_m)=\Split(I, 128)$. 
 \end{enumerate}
 \item
-Установить
+Установить:
 \begin{enumerate}
 \item
 $s\leftarrow\algname{belt-block}(S,K)$;
