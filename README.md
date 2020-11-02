@@ -62,12 +62,13 @@ subordinate keys from a master key).
 
 In BeltV2, the [CTS](https://en.wikipedia.org/wiki/Ciphertext_stealing) 
 (CipherText Srealing) technique is integrated into the `belt-ecb` and 
-`belt-cbc` modes. This allows us to extend encryption to messages with 
+`belt-cbc` modes. This allows encryption to be extended to messages with 
 a non-integral number of blocks.
 
 ## BeltV3
 
-The third version of STB 34.101.31 is going to be standardized in 2021.
+The third version of STB 34.101.31 was released in 2020. It will be 
+operational from September 2021.
 
 BeltV3 additionally defines:
 - `belt-wblock` — wide-block encryption;
@@ -87,6 +88,10 @@ The [CHE](https://eprint.iacr.org/2020/331.pdf) mode is a slightly lightweight
 variant of DWP that saves one invocation of `belt-block`. This is achieved by 
 loss of compatibility with `belt-ctr`.
 
+A special feature of the DWP and CHE modes is the permission to
+issue intermediate authentication tags. This facilitates the processing of 
+large data streams. 
+
 The `belt-bde` mechanism implements the 
 [XTS](https://en.wikipedia.org/wiki/Disk_encryption_theory#XTS) disk encryption mode 
 in which one encryption key is dropped. The drawback of `belt-bde` is that each block 
@@ -104,9 +109,9 @@ processed using a single key without changing it. Quotas are determined followin
 
 ## What is this repo?
 
-In this repo, we are discussing BeltV3.
+In this repo, we are discussing Belt version 3 and higher.
 
-The latest releases of BeltV3 can be found at 
+The latest releases of Belt can be found at 
 [Releases](https://github.com/bcrypto/belt/releases).
 
 Comments and proposals are processed at 
