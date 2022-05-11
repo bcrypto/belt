@@ -3,16 +3,16 @@ name: build
 on:
   push:
     branches: 
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   build:
     runs-on: [ubuntu-latest]
     steps:
-      - uses: actions/checkout@main
+      - uses: actions/checkout@master
         with:
           ref: ${{ github.ref }}
       - name: Build LaTeX
