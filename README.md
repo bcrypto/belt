@@ -2,7 +2,7 @@
 
 ![](figs/belt-logo-small.png)
 
-[![Build Status](https://travis-ci.com/bcrypto/belt.svg?branch=master)](https://travis-ci.com/bcrypto/belt)
+[![build](https://github.com/bcrypto/belt/actions/workflows/build.yaml/badge.svg)](https://github.com/bcrypto/belt/actions/workflows/build.yaml)
 
 ## What is Belt?
 

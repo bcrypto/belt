@@ -17,6 +17,6 @@
 *.backup
 
 # Concrete files
-support
+_docs
 spec/*.pdf
 clear.cmd
