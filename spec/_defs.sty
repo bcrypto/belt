@@ -1,7 +1,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{_defs}
 
-%%%%%%%%%%%  Format %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%  Format %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\doubt}[1]{{\textcolor{red}{#1}}}
 \newcommand{\addendum}[1]{\textcolor{blue}{#1}}
@@ -19,7 +19,7 @@
 \def\dhline{\hline\hline}
 \def\ddhline{\hline\multicolumn{\LT@cols}{c}{}\\[-0.75em]\hline}
 
-%%%%%%%%%%% Local Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%% Local Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand\btoi[1]{\ensuremath{\lfloor#1\rceil}}
 \newcommand\Btoi[1]{\ensuremath{\left\lfloor#1\right\rceil}}
@@ -36,7 +36,7 @@
 \providecommand{\ZZ}{\mathbb{Z}}
 \providecommand{\FF}{\mathbb{F}}
 
-%%%%%%%%%%%%%%%%%%%%%%%% Renew %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% Renew %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \renewcommand{\le}{\leqslant}
 \renewcommand{\leq}{\leqslant}
@@ -44,7 +44,64 @@
 \renewcommand{\geq}{\geqslant}
 \providecommand{\No}{\textnumero}
 
-%%%%%%%%%%%%%%%%%%%%%%%% Appendix %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%% Environments %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcounter{note}[subsubsection]
+
+\newenvironment{note*}{
+  \def\thenotename{Примечание~---~}
+  \list{}{\vskip3pt
+    \labelwidth=0pt\topsep=0pt\partopsep=0pt\parskip=0pt\parsep=0pt
+    \itemsep=0pt\itemindent=0pt\leftmargin=\parindent
+    \labelsep=0pt\small\item[\thenotename]}
+}{\vskip3pt\endlist}
+
+\newenvironment{note}{
+  \def\thenotename{Примечание~\@arabic\c@note~---~}
+  \list{}{\vskip3pt
+   \labelwidth=0pt\topsep=0pt\partopsep=0pt\parskip=0pt\parsep=0pt
+   \itemsep=0pt\itemindent=0pt\leftmargin=\parindent
+    \refstepcounter{note}
+    \labelsep=0pt\small\item[\thenotename]}
+}{\vskip3pt\endlist}
+
+\newenvironment{notes}{
+  \def\thenotename{Примечания}
+  \list{}{\vskip3pt
+    \labelwidth=0pt\topsep=0pt\partopsep=0pt\parskip=0pt\parsep=0pt
+    \itemsep=0pt\itemindent=0pt\leftmargin=\parindent
+    \labelsep=0pt\small\item[\thenotename]}\mbox{}\par
+}{\vskip3pt\endlist}
+
+\newcounter{example}[subsubsection]
+
+\newenvironment{example*}{
+ \def\theexamplename{Пример~---~}
+  \list{}{\vskip3pt
+    \labelwidth=0pt\topsep=0pt\partopsep=0pt\parskip=0pt\parsep=0pt
+    \itemsep=0pt\itemindent=0pt\leftmargin=\parindent
+    \labelsep=0pt\small\bf\itshape\item[\theexamplename]}
+}{\vskip3pt\endlist}
+
+\newenvironment{example}{
+  \def\theexamplename{Пример~\@arabic\c@example~---~}
+  \list{}{\vskip3pt
+    \labelwidth=0pt\topsep=0pt\partopsep=0pt\parskip=0pt\parsep=0pt
+    \itemsep=0pt\itemindent=0pt\leftmargin=\parindent
+    \refstepcounter{example}
+    \labelsep=0pt\small\bf\itshape\item[\theexamplename]}
+}{\vskip3pt\endlist}
+
+\newenvironment{examples}{
+  \def\theexamplename{Примеры}
+  \list{}{\vskip3pt
+    \labelwidth=0pt\topsep=0pt\partopsep=0pt\parskip=0pt\parsep=0pt
+    \itemsep=0pt\itemindent=0pt\leftmargin=\parindent
+    \refstepcounter{example}
+    \labelsep=0pt\small\bf\itshape\item[\theexamplename]}\mbox{}\par
+}{\vskip3pt\endlist}
+
+%%%%%%%%%%%%%%%%%%%%%%%% Appendix %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \def\apprefix{}
 \newenvironment{appendix}[3]
@@ -68,7 +125,7 @@
   \def\thechapter{\@arabic\c@chapter}
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%% Local %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% Locale %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \addto\captionsrussian{%
   \renewcommand{\figurename}{Рисунок}
