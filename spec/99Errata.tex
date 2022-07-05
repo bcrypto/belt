@@ -9,6 +9,25 @@
 \hline
 В каком месте & Напечатано & Должно быть\\
 \hline
+%
+\hline
+Пункт~\ref{HASH.Alg},\par
+шаг 1
+&
+Определить $(X_1,X_2,\ldots,X_n)=\Splita(X, 256)$.
+&
+Определить $(X_1,X_2,\ldots,X_n)=\Split(X, 256)$.
+\\
+%
+\hline
+Пункт~\ref{HASH.Alg},\par
+примечание
+&
+Если $X=\perp$, то $n=1$ и $X_1=\perp$.
+&
+Если $X=\perp$, то $n=0$ и шаги 2.4 и 3 не выполняются.
+\\
+%
 \hline
 Приложение~\ref{TEST},\par 
 наименование
@@ -17,6 +36,7 @@
 &
 Проверочные примеры
 \\
+%
 \hline
 Приложение~\ref{TEST},\par 
 таблица~\ref{Table.TEST.KeyUnwrap},\par
@@ -95,6 +115,7 @@ $X$\\
 \end{tabular}
 \vskip1pt
 \\
+%
 \hline
 Приложение~\ref{TEST},\par 
 таблица~\ref{Table.TEST.Compr},\par
