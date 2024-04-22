@@ -24,9 +24,9 @@ The standardized encryption modes are
 [conventional](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation), 
 they usually accompany every block cipher. The only caveat is that in `belt-ctr` a 
 nonce (initialization vector) is encrypted before producing a sequence of 
-counters from it. Thus, `belt-ctr` formally implements not CTR but the mode
-[known as](https://web.cs.ucdavis.edu/~rogaway/papers/nonce.pdf) CTR2. 
-This mode was originally proposed in the Soviet standard 
+counters from it. Thus, `belt-ctr` formally implements not the CTR but 
+[CTR2](https://web.cs.ucdavis.edu/~rogaway/papers/nonce.pdf) mode. 
+The latter mode was originally proposed in the Soviet standard 
 [GOST 28147-89](https://en.wikipedia.org/wiki/GOST_(block_cipher)).
 
 In `belt-mac`, the [OMAC](https://eprint.iacr.org/2002/180.pdf) mode is instantiated. 
@@ -42,13 +42,10 @@ The second version of STB 34.101.31, released in 2011, additionally defines:
 - `belt-hash` — hashing;
 - `belt-keyrep` — deriving one key from another.
 
-Here we use the updated names of mechanisms that will be set in the 
-forthcoming version of STB 34.101.31.
-
 In `belt-dwp`, the DWP mode of AEAD is implemented. Actually, `belt-dwp` 
-continues `belt-ctr` additionally generating authentication tags over encrypted 
-and associated (optional public) data. DWP is similar to the well-known 
-[GCM](https://en.wikipedia.org/wiki/Galois/Counter_Mode) 
+continues `belt-ctr` by additionally generating authentication tags over 
+encrypted and associated (optional public) data. DWP is similar to the 
+well-known [GCM](https://en.wikipedia.org/wiki/Galois/Counter_Mode) 
 mode but provides greater security guarantees under nonce misuse (repeating).
 
 The `belt-hash` algorithm implements hashing using the compression function 
@@ -67,10 +64,7 @@ a non-integral number of blocks.
 
 ## BeltV3
 
-The third version of STB 34.101.31 was released in 2020. It will be 
-operational from September 2021.
-
-BeltV3 additionally defines:
+The third version of STB 34.101.31, released in 2020, additionally defines:
 - `belt-wblock` — wide-block encryption;
 - `belt-che` — AEAD in the CHE (Counter-Hash-Encrypt) mode;
 - `belt-bde` — block-wise disk encryption;
