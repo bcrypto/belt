@@ -1,18 +1,31 @@
 \clearpage
-\chapter*{\mbox{}\hfill Поправка к официальной редакции\hfill\mbox{}}
+\chapter*{\mbox{}\hfill Поправка к официальной редакции\footnote{
+Синим цветом выделены корректировки, пока не принятые официально.
+}\hfill\mbox{}}
 
 \mbox{}
 
 {\small
 \begin{center}
-\begin{tabular}{|p{2.6cm}|p{6.55cm}|p{6.55cm}|}
+\begin{longtable}{|p{2.6cm}|p{6.55cm}|p{6.55cm}|}
 \hline
 В каком месте & Напечатано & Должно быть\\
 \hline
 %
 \hline
-Пункт~\ref{HASH.Alg},\par
-шаг 1
+\addendum{Пункт~\ref{AE.Vars},}\par
+\addendum{абзац 1}
+&
+Используются переменные~$s,t\in\{0,1\}^{128}$.\par
+В алгоритмах схемы~1 дополнительно используется 
+переменная~$r\in\{0,1\}^{128}$.
+&
+Используются переменные~$r,s,t\in\{0,1\}^{128}$.
+\\
+%
+\hline
+\addendum{Пункт~\ref{HASH.Alg},}\par
+\addendum{шаг 1}
 &
 Определить $(X_1,X_2,\ldots,X_n)=\Splita(X, 256)$.
 &
@@ -20,8 +33,8 @@
 \\
 %
 \hline
-Пункт~\ref{HASH.Alg},\par
-примечание
+\addendum{Пункт~\ref{HASH.Alg},}\par
+\addendum{примечание}
 &
 Если $X=\perp$, то $n=1$ и $X_1=\perp$.
 &
@@ -54,7 +67,7 @@ $K$\\
 $Y$\\
 \hline
 \end{tabular}
-\vskip1pt
+\vskip6pt
 &
 \vskip-6pt
 \begin{tabular}{|c|}
@@ -68,7 +81,7 @@ $K$\\
 $X$\\
 \hline
 \end{tabular}
-\vskip1pt
+\vskip6pt
 \\
 \hline
 Приложение~\ref{TEST},\par 
@@ -83,17 +96,19 @@ $X$\\
 $K$\\
 \hline
 $S$\\
-\ddhline
+\hline
+\hline
 \multicolumn{1}{|c}{}\\
 \hline
 $Y$\\
-\ddhline
+\hline
+\hline
 \multicolumn{1}{|c}{}\\
 \hline
 $Y$\\
 \hline
 \end{tabular}
-\vskip1pt
+\vskip6pt
 &
 \vskip-6pt
 \begin{tabular}{|c|}
@@ -103,17 +118,19 @@ $Y$\\
 $K$\\
 \hline
 $S$\\
-\ddhline
+\hline
+\hline
 \multicolumn{1}{|c}{}\\
 \hline
 $X$\\
-\ddhline
+\hline
+\hline
 \multicolumn{1}{|c}{}\\
 \hline
 $X$\\
 \hline
 \end{tabular}
-\vskip1pt
+\vskip6pt
 \\
 %
 \hline
@@ -132,6 +149,11 @@ $\hexz{5BE3D612~17B96181~FE6786AD~716B890B}$
 $\hex{5CB0C0FF~33C356B8~35C405AE~D8E07F99}$}
 \\
 \hline
-\end{tabular}
+\end{longtable}
 \end{center}
 }
+
+\thispagestyle{headings}
+
+\mbox{}
+
